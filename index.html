@@ -3,17 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ugadi Bingo</title>
+    <title>Bingo Game</title>
     <style>
         body { text-align: center; font-family: Arial, sans-serif; }
-        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 600px; margin: auto; }
-        .grid img { width: 100%; height: auto; border: 2px solid black; }
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr);  /* 3x4 grid */
+            gap: 10px; 
+            max-width: 600px; 
+            margin: auto; 
+        }
+        .grid img { 
+            width: 100%; 
+            height: auto; 
+            border: 2px solid black; 
+            cursor: pointer; 
+            transition: 0.3s; 
+        }
+        .marked { 
+            filter: grayscale(100%); /* Black & White */
+            border: 3px solid red; 
+        }
+        .status {
+            font-size: 24px; 
+            font-weight: bold; 
+            margin-top: 20px; 
+            color: green; 
+        }
+
+        body { 
+    text-align: center; 
+    font-family: Arial, sans-serif; 
+    background: url('images4/pastel.avif') no-repeat center center fixed; 
+    background-size: cover;  /* Ensures the image covers the screen */
+    color: white;  /* Makes text readable */
+}
+
+h1 {
+    background: rgba(0, 0, 0, 0.6);  /* Adds a semi-transparent background */
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+.grid { 
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 10px; 
+    max-width: 600px; 
+    margin: auto; 
+    background: rgba(0, 0, 0, 0.5); /* Slight dark overlay for better contrast */
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.grid img { 
+    width: 100%; 
+    height: auto; 
+    border: 2px solid black; 
+    cursor: pointer; 
+    transition: 0.3s; 
+}
+
     </style>
 </head>
 <body>
     <h1>Ugadi Bingo</h1>
     <div class="grid" id="bingoGrid"></div>
-    
+    <p id="status" class="status"></p>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             let images = [
@@ -25,14 +83,53 @@
             ];
             
             images.sort(() => Math.random() - 0.5); // Shuffle images
-            let selectedImages = images.slice(0, 12); // Pick 10 random images
-            
-            const grid = document.getElementById("bingoGrid");
-            selectedImages.forEach(img => {
+            let selectedImages = images.slice(0, 12); // Select 12 images
+            let grid = document.getElementById("bingoGrid");
+            let rows = 3, cols = 4;  // 3x4 grid
+            let board = Array.from({ length: rows }, () => new Array(cols).fill(0)); // Initialize board
+            let imgElements = [];
+
+            selectedImages.forEach((img, index) => {
                 let imgElement = document.createElement("img");
-                imgElement.src = `images4/${img}`; // Assuming images are in an 'images' folder
+                imgElement.src = `images4/${img}`;
+                imgElement.dataset.index = index;
+                imgElement.addEventListener("click", () => toggleMark(imgElement, index));
                 grid.appendChild(imgElement);
+                imgElements.push(imgElement);
             });
+
+            function toggleMark(imgElement, index) {
+                imgElement.classList.toggle("marked");
+                let row = Math.floor(index / cols);
+                let col = index % cols;
+                board[row][col] = board[row][col] ? 0 : 1;
+                checkWin();
+            }
+
+            function checkWin() {
+                let status = document.getElementById("status");
+                let bingoMessage = "";
+                let bingoAchieved = false;
+
+                // Check rows for BINGO
+                for (let i = 0; i < rows; i++) {
+                    if (board[i].every(cell => cell === 1)) {
+                        bingoMessage = `🎉 Row ${i + 1} Bingo!`;
+                        bingoAchieved = true;
+                    }
+                }
+
+                
+
+                // Check for HOUSE FULL
+                let allMarked = board.flat().every(cell => cell === 1);
+
+                if (allMarked) {
+                    status.innerText = "🏆 HOUSE FULL!";
+                } else if (bingoAchieved) {
+                    status.innerText = bingoMessage;
+                }
+            }
         });
     </script>
 </body>
