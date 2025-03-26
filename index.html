@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -129,6 +129,153 @@ h1 {
                 } else if (bingoAchieved) {
                     status.innerText = bingoMessage;
                 }
+            }
+        });
+    </script>
+</body>
+</html>
+ -->
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bingo Game</title>
+    <style>
+        body { 
+            text-align: center; 
+            font-family: Arial, sans-serif; 
+            background: url('images4/Pastel.mp4') no-repeat center center fixed; 
+            background-size: cover;
+            color: white;
+        }
+
+        h1 {
+            background: rgba(0, 0, 0, 0.6);
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 10px; 
+            max-width: 600px; 
+            margin: auto; 
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .grid img { 
+            width: 100%; 
+            height: auto; 
+            border: 2px solid black; 
+            cursor: pointer; 
+            transition: 0.3s; 
+        }
+
+        .marked { 
+            filter: grayscale(100%);
+            border: 3px solid red; 
+        }
+
+        .status {
+            font-size: 40px; 
+            font-weight: bold; 
+            margin-top: 20px; 
+            color: rgb(22, 22, 22); 
+            
+            
+        }
+    </style>
+</head>
+<body>
+    <h1>Ugadi Bingo</h1>
+    <div class="grid" id="bingoGrid"></div>
+    <p id="status" class="status"></p>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let images = [
+                "1.png", "2.png", "3.png", "4.png",
+                "5.png", "6.png", "7.png", "8.png",
+                "9.png", "10.png", "11.png", "12.png",
+                "13.png", "14.png", "15.png", "16.png",
+                "17.png", "18.png", "19.png", "20.png"
+            ];
+            
+            images.sort(() => Math.random() - 0.5); // Shuffle images
+            let selectedImages = images.slice(0, 16); // Select 16 images for a 4x4 grid
+            let grid = document.getElementById("bingoGrid");
+            let rows = 4, cols = 4;
+            let board = Array.from({ length: rows }, () => new Array(cols).fill(0)); // Initialize board
+            let imgElements = [];
+            let jaldi4Triggered = false; // Track if "Jaldi 4!" has already been displayed
+            let rowBingoAchieved = false; // Track if row Bingo has been achieved once
+
+            selectedImages.forEach((img, index) => {
+                let imgElement = document.createElement("img");
+                imgElement.src = `images4/${img}`;
+                imgElement.dataset.index = index;
+                imgElement.addEventListener("click", () => toggleMark(imgElement, index));
+                grid.appendChild(imgElement);
+                imgElements.push(imgElement);
+            });
+
+            function toggleMark(imgElement, index) {
+                imgElement.classList.toggle("marked");
+                let row = Math.floor(index / cols);
+                let col = index % cols;
+                board[row][col] = board[row][col] ? 0 : 1;
+                checkWin();
+            }
+
+            function checkWin() {
+                let status = document.getElementById("status");
+                let message = "";
+
+                // Check for row-wise Bingo (only once)
+                if (!rowBingoAchieved) {
+                    for (let i = 0; i < rows; i++) {
+                        if (board[i].every(cell => cell === 1)) {
+                            message = `🎉 Row ${i + 1} Bingo!`;
+                            rowBingoAchieved = true; // Stop further row Bingos
+                        }
+                    }
+                } else {
+                    // If rowBingoAchieved is already true, remove row-related messages
+                    if (message.includes("Bingo")) message = "";
+                }
+
+                // Check for Jaldi 4
+                let markedTiles = [];
+                for (let i = 0; i < rows; i++) {
+                    for (let j = 0; j < cols; j++) {
+                        if (board[i][j] === 1) {
+                            markedTiles.push([i, j]); // Store marked tile positions
+                        }
+                    }
+                }
+
+                if (!jaldi4Triggered && markedTiles.length >= 4) {
+                    let uniqueRows = [...new Set(markedTiles.map(tile => tile[0]))]; // Unique rows
+                    if (uniqueRows.length >= 2) { // Ensure it's not a full row
+                        status.innerText = "🔥 Jaldi 4!";
+                        jaldi4Triggered = true;
+                        return;
+                    }
+                }
+
+                // Check for HOUSE FULL
+                let allMarked = board.flat().every(cell => cell === 1);
+                if (allMarked) {
+                    message = "🏆 HOUSE FULL!";
+                }
+
+                status.innerText = message;
             }
         });
     </script>
