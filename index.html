@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bingo Game</title>
+    <title>Ugadi Bingo</title>
     <style>
         body { text-align: center; font-family: Arial, sans-serif; }
         .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 600px; margin: auto; }
@@ -17,23 +17,23 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             let images = [
-                "img1.png", "img2.png", "img3.png", "img4.png",
-                "img5.png", "img6.png", "img7.png", "img8.png",
-                "img9.png", "img10.png", "img11.png", "img12.png",
-                "img13.png", "img14.png", "img15.png", "img16.png",
-                "img17.png", "img18.png", "img19.png", "img20.png"
+                "1.png", "2.png", "3.png", "4.png",
+                "5.png", "6.png", "7.png", "8.png",
+                "9.png", "10.png", "11.png", "12.png",
+                "13.png", "14.png", "15.png", "16.png",
+                "17.png", "18.png", "19.png", "20.png"
             ];
             
             images.sort(() => Math.random() - 0.5); // Shuffle images
+            let selectedImages = images.slice(0, 12); // Pick 10 random images
             
             const grid = document.getElementById("bingoGrid");
-            images.forEach(img => {
+            selectedImages.forEach(img => {
                 let imgElement = document.createElement("img");
-                imgElement.src = `images/${img}`; // Assuming images are in an 'images' folder
+                imgElement.src = `images4/${img}`; // Assuming images are in an 'images' folder
                 grid.appendChild(imgElement);
             });
         });
     </script>
 </body>
 </html>
-
