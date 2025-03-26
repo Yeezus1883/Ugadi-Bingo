@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bingo Game</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 600px; margin: auto; }
+        .grid img { width: 100%; height: auto; border: 2px solid black; }
+    </style>
+</head>
+<body>
+    <h1>Ugadi Bingo</h1>
+    <div class="grid" id="bingoGrid"></div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let images = [
+                "img1.png", "img2.png", "img3.png", "img4.png",
+                "img5.png", "img6.png", "img7.png", "img8.png",
+                "img9.png", "img10.png", "img11.png", "img12.png",
+                "img13.png", "img14.png", "img15.png", "img16.png",
+                "img17.png", "img18.png", "img19.png", "img20.png"
+            ];
+            
+            images.sort(() => Math.random() - 0.5); // Shuffle images
+            
+            const grid = document.getElementById("bingoGrid");
+            images.forEach(img => {
+                let imgElement = document.createElement("img");
+                imgElement.src = `images/${img}`; // Assuming images are in an 'images' folder
+                grid.appendChild(imgElement);
+            });
+        });
+    </script>
+</body>
+</html>
+
