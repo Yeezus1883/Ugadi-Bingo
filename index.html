@@ -1,5 +1,5 @@
 
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -15,10 +15,20 @@
         }
 
         h1 {
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(255, 145, 0, 0.765);
             display: inline-block;
             padding: 10px 20px;
             border-radius: 10px;
+        }
+        footer{
+            background:rgb(255, 255, 0);
+            color: black;
+            font-weight:900;
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: large;
+            
         }
 
         .grid { 
@@ -50,13 +60,14 @@
             font-weight: bold; 
             margin-top: 20px; 
             color: rgb(22, 22, 22); 
-            
-            
+           
+    
         }
     </style>
 </head>
 <body>
     <h1>Ugadi Bingo</h1>
+
     <div class="grid" id="bingoGrid"></div>
     <p id="status" class="status"></p>
 
@@ -67,7 +78,9 @@
                 "5.png", "6.png", "7.png", "8.png",
                 "9.png", "10.png", "11.png", "12.png",
                 "13.png", "14.png", "15.png", "16.png",
-                "17.png", "18.png", "19.png", "20.png"
+                "17.png", "18.png", "19.png", "20.png",
+                "21.png","22.png"
+                
             ];
             
             images.sort(() => Math.random() - 0.5); // Shuffle images
@@ -142,5 +155,11 @@
             }
         });
     </script>
+    <footer>RULE 1. DO NOT RELOAD THE PAGE !
+            
+    </footer>
+    <footer>
+        RULE 2. HAVE FUN !
+    </footer>
 </body>
 </html>
